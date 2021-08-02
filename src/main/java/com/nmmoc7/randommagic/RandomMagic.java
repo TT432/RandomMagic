@@ -22,9 +22,10 @@ import java.util.stream.Collectors;
 /**
  * @author DustW
  */
-@Mod("randommagic")
+@Mod(RandomMagic.MOD_ID)
 public class RandomMagic {
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final String MOD_ID = "randommagic";
 
     public RandomMagic() {
         // Register the setup method for modloading

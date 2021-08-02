@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "randommagic:block/magic_table"
+    }
+  }
+}

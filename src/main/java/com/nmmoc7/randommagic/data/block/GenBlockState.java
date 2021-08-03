@@ -57,7 +57,7 @@ public class GenBlockState extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        addObjBlocks();
+        simpleBlock(ModBlocks.MAGIC_TABLE);
     }
 
     private void addObjBlocks() {

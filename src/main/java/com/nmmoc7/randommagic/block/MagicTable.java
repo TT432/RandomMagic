@@ -44,7 +44,7 @@ public class MagicTable extends ModObjBlock {
 
     public MagicTable() {
         super("magic_table",
-                AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(5).notSolid(),
+                AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(5),
                 MainItemGroup.GROUP);
     }
 

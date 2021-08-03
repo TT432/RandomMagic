@@ -28,7 +28,6 @@ public class GenBlockModel extends BlockModelProvider {
     }
 
     private void addObjBlocks() {
-        addObjBlock(ModBlocks.MAGIC_TABLE);
     }
 
     private void addObjBlock(Block block) {

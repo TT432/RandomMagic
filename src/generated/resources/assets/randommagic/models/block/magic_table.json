@@ -1,5 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "randommagic:models/block/magic_table.obj",
-  "flip-v": true
-}

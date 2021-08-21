@@ -1,0 +1,31 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "one",
+    "dstrgb": "zero"
+  },
+  "vertex": "randommagic:blur",
+  "fragment": "randommagic:blur",
+  "attributes": ["Position"],
+  "samplers": [{
+    "name": "image"
+  },  {
+    "name": "scene"
+  },{
+    "name": "bloomBlur"
+  }],
+  "uniforms": [
+    {
+      "name": "horizontal",
+      "type": "boolean",
+      "count": 1,
+      "values": [true]
+    },
+    {
+      "name": "exposure",
+      "type": "float",
+      "count": 1,
+      "values": [1.0]
+    }
+  ]
+}

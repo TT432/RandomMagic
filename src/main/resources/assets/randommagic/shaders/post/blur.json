@@ -1,0 +1,21 @@
+{
+  "targets": [
+    "randommagic:swap",
+    "randommagic:final"
+  ],
+  "passes": [{
+    "name": "randommagic:blur",
+    "intarget": "randommagic:swap",
+    "outtarget": "randommagic:final",
+    "uniforms": []
+  }, {
+    "name": "randommagic:blur",
+    "intarget": "randommagic:final",
+    "outtarget": "randommagic:swap",
+    "uniforms": []
+  }, {
+    "name": "minecraft:blit",
+    "intarget": "randommagic:swap",
+    "outtarget": "randommagic:final"
+  }]
+}

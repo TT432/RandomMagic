@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.nmmoc7.randommagic.RandomMagic;
 import com.nmmoc7.randommagic.magic_circle.entity.BigDipperEntity;
 import com.nmmoc7.randommagic.magic_circle.renderer.model.BigDipperEntityModel;
-import net.minecraft.client.Minecraft;
+import com.nmmoc7.randommagic.util.MathUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.ClippingHelper;
@@ -13,9 +13,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * @author DustW
@@ -38,8 +35,15 @@ public class BigDipperEntityRenderer extends EntityRenderer<BigDipperEntity> {
             MODEL.entity = entityIn;
         }
 
+        matrixStackIn.push();
+        matrixStackIn.scale(-9, -1, 9);
+        matrixStackIn.translate(0, -1.6, 0);
+
+        MODEL.partTick = partialTicks;
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityTranslucent(this.getEntityTexture(entityIn)));
-        MODEL.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+        MODEL.render(matrixStackIn, ivertexbuilder, MathUtils.LIGHT_12, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+
+        matrixStackIn.pop();
     }
 
     @Override

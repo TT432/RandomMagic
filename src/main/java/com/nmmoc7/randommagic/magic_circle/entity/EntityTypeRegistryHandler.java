@@ -16,11 +16,15 @@ public class EntityTypeRegistryHandler {
     public static final ResourceLocation BIG_DIPPER_NAME = new ResourceLocation(RandomMagic.MOD_ID, "big_dipper");
     public static final EntityType<BigDipperEntity> BIG_DIPPER = EntityType.Builder
             .create(BigDipperEntity::new, EntityClassification.MISC).build(BIG_DIPPER_NAME.toString());
+    public static final ResourceLocation TEST_GIF_NAME = new ResourceLocation(RandomMagic.MOD_ID, "test_gif");
+    public static final EntityType<TestGIFEntity> TEST_GIF = EntityType.Builder
+            .create(TestGIFEntity::new, EntityClassification.MISC).build(TEST_GIF_NAME.toString());
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<EntityType<?>> event) {
         event.getRegistry().registerAll(
-                BIG_DIPPER.setRegistryName(BIG_DIPPER_NAME)
+                BIG_DIPPER.setRegistryName(BIG_DIPPER_NAME),
+                TEST_GIF.setRegistryName(TEST_GIF_NAME)
         );
     }
 }

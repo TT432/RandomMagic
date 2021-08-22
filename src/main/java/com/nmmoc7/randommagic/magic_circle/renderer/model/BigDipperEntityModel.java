@@ -3,49 +3,16 @@ package com.nmmoc7.randommagic.magic_circle.renderer.model;// Made with Blockben
 // Paste this class into your mod and generate all required imports
 
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.nmmoc7.randommagic.RandomMagic;
+import com.nmmoc7.randommagic.TickCounterHandler;
 import com.nmmoc7.randommagic.magic_circle.entity.BigDipperEntity;
-import com.nmmoc7.randommagic.magic_circle.renderer.shader.BlurShaderHandler;
-import com.nmmoc7.randommagic.magic_circle.renderer.shader.ShaderProgram;
-import net.minecraft.client.MainWindow;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
-import net.minecraft.resources.IResource;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.FileUtil;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.world.LightType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.loading.FileUtils;
-import net.minecraftforge.fml.relauncher.libraries.LibraryManager;
-import org.apache.commons.io.IOUtils;
-import org.lwjgl.opengl.GL11;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 
 /**
  * @author DustW
@@ -53,6 +20,7 @@ import java.util.function.Supplier;
 public class BigDipperEntityModel extends EntityModel<Entity> {
 	private final ModelRenderer group;
 	private final ModelRenderer bG;
+	private final ModelRenderer bGIn;
 	private final ModelRenderer sRoG;
 	private final ModelRenderer bRoG;
 	private final ModelRenderer stars;
@@ -72,6 +40,7 @@ public class BigDipperEntityModel extends EntityModel<Entity> {
 	private final ModelRenderer dubhe;
 
 	public BigDipperEntity entity;
+	public float partTick;
 
 	public BigDipperEntityModel() {
 		textureWidth = 96;
@@ -84,8 +53,13 @@ public class BigDipperEntityModel extends EntityModel<Entity> {
 		bG = new ModelRenderer(this);
 		bG.setRotationPoint(0.0F, 0.0F, 0.0F);
 		group.addChild(bG);
-		bG.setTextureOffset(0, 0).addBox(-24.0F, 13.0F, -24.0F, 48.0F, -10.0F, 48.0F, 5.0F, false);
-		bG.setTextureOffset(0, 72).addBox(-12.0F, 7.5F, -12.0F, 24.0F, 0.0F, 24.0F, 0.0F, false);
+
+		bGIn = new ModelRenderer(this);
+		bG.setRotationPoint(0.0F, 0.0F, 0.0F);
+		bG.addChild(bGIn);
+		bGIn.setTextureOffset(0, 0).addBox(-24.0F, 13.0F, -24.0F, 48.0F, -10.0F, 48.0F, 5.0F, false);
+		bGIn.setTextureOffset(0, 72).addBox(-12.0F, 7.5F, -12.0F, 24.0F, 0.0F, 24.0F, 0.0F, false);
+
 
 		sRoG = new ModelRenderer(this);
 		sRoG.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -149,14 +123,37 @@ public class BigDipperEntityModel extends EntityModel<Entity> {
 
 	@Override
 	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-		BufferBuilder bufferBuilder = new BufferBuilder(1024);
-		BlurShaderHandler.INSTANCE.init(matrixStack, bufferBuilder, group, packedLight, packedOverlay);
-		BlurShaderHandler.INSTANCE.renderA(bufferBuilder);
-		BlurShaderHandler.INSTANCE.renderB(0);
-		BlurShaderHandler.INSTANCE.renderC();
-		BlurShaderHandler.INSTANCE.renderD();
-		BlurShaderHandler.INSTANCE.renderE();
+		// BlurShaderHandler.INSTANCE.init(matrixStack, group, packedLight, packedOverlay);
+		// BlurShaderHandler.INSTANCE.renderB(0);
+		// BlurShaderHandler.INSTANCE.renderC();
+		// BlurShaderHandler.INSTANCE.renderD();
+		// BlurShaderHandler.INSTANCE.renderE();
+
 		// group.render(matrixStack, buffer, packedLight, packedOverlay);
+
+		matrixStack.push();
+		matrixStack.rotate(Vector3f.YN.rotationDegrees(-getDegrees(0.7F)));
+		sRoG.render(matrixStack, buffer, packedLight, packedOverlay);
+		matrixStack.pop();
+
+		matrixStack.push();
+		matrixStack.rotate(Vector3f.YN.rotationDegrees(-getDegrees(0.5F)));
+		bRoG.render(matrixStack, buffer, packedLight, packedOverlay);
+		matrixStack.pop();
+
+		bGIn.render(matrixStack, buffer, packedLight, packedOverlay);
+
+		stars.render(matrixStack, buffer, getLight(), packedOverlay);
+	}
+
+	public int getLight() {
+		double light = MathHelper.sin((float) (2 * Math.PI / 200 * (TickCounterHandler.tick + partTick))) / 2 + 0.5;
+		int value = Math.max(7, MathHelper.fastFloor(15 * light));
+		return LightTexture.packLight(value, value);
+	}
+
+	public float getDegrees(float degrees) {
+		return (((TickCounterHandler.tick + partTick) * degrees)) % 360;
 	}
 
 	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

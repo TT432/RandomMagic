@@ -5,8 +5,6 @@ import com.nmmoc7.randommagic.block.ModBlocks;
 import com.nmmoc7.randommagic.item.ModItems;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

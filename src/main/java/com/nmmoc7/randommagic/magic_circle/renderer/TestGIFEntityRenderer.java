@@ -3,8 +3,6 @@ package com.nmmoc7.randommagic.magic_circle.renderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.nmmoc7.randommagic.TickCounterHandler;
 import com.nmmoc7.randommagic.magic_circle.entity.TestGIFEntity;
-import com.nmmoc7.randommagic.magic_circle.gif.GIFRenderer;
-import com.nmmoc7.randommagic.magic_circle.gif.GIFS;
 import com.nmmoc7.randommagic.util.MathUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.culling.ClippingHelper;
@@ -27,7 +25,7 @@ public class TestGIFEntityRenderer extends EntityRenderer<TestGIFEntity> {
     public void render(TestGIFEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         matrixStackIn.push();
         matrixStackIn.scale(30, 1, 30);
-        GIFRenderer.render(GIFS.TEST.make(getTexture(partialTicks, GIFS.TEST.maxFrame)),
+        GIFRegisterHandler.TEST.get().render(getTexture(partialTicks, GIFRegisterHandler.TEST.get().maxFrame),
                 bufferIn, matrixStackIn.getLast().getMatrix(), 0xFFFFFFFF, MathUtils.MAX_LIGHT);
         matrixStackIn.pop();
     }

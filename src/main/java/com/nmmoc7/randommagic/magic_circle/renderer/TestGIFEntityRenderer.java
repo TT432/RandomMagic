@@ -1,6 +1,8 @@
 package com.nmmoc7.randommagic.magic_circle.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.nmmoc7.phoenixlib.client.gif.GIFInstance;
+import com.nmmoc7.phoenixlib.client.gif.TextureRenderer;
 import com.nmmoc7.randommagic.TickCounterHandler;
 import com.nmmoc7.randommagic.magic_circle.entity.TestGIFEntity;
 import com.nmmoc7.randommagic.util.MathUtils;
@@ -24,8 +26,9 @@ public class TestGIFEntityRenderer extends EntityRenderer<TestGIFEntity> {
     @Override
     public void render(TestGIFEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         matrixStackIn.push();
-        matrixStackIn.scale(30, 1, 30);
-        GIFRegisterHandler.TEST.get().render(getTexture(partialTicks, GIFRegisterHandler.TEST.get().maxFrame),
+        matrixStackIn.scale(-30, -1, 30);
+        GIFInstance testGif = GIFRegisterHandler.TEST.get();
+        TextureRenderer.render(testGif.getFrame(getTexture(partialTicks, testGif.maxFrame)),
                 bufferIn, matrixStackIn.getLast().getMatrix(), 0xFFFFFFFF, MathUtils.MAX_LIGHT);
         matrixStackIn.pop();
     }

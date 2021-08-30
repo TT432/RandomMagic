@@ -9,14 +9,14 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class GIFRegisterHandler {
     public static final ResourceLocation TEST_GIF = new ResourceLocation(RandomMagic.MOD_ID, "gif/test_gif.gif");
 
     public static Lazy<GIFInstance> TEST = Lazy.of(() -> new GIFInstance(TEST_GIF));
 
     @SubscribeEvent
-    public static void onClientSetup(GIFRegisterEvent event) {
+    public static void onGIFRegister(GIFRegisterEvent event) {
         event.register(TEST.get());
     }
 }
